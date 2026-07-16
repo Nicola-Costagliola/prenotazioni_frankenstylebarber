@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Migliora lo scroll per i dispositivi mobile */
+html {
+  scroll-behavior: smooth;
+}
