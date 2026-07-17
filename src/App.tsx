@@ -1,65 +1,39 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertCircle, Calendar, CheckCircle2, ChevronLeft, ChevronRight, Clock, MessageSquareQuote, Star, X } from 'lucide-react';
+import { AlertCircle, Calendar, CheckCircle2, ChevronLeft, ChevronRight, Clock, MessageSquareQuote, X } from 'lucide-react';
+import type { Service, TimeSlot, ToastState } from './models/Model';
+import { API_BASE_URL, GOOGLE_REVIEW_URL } from './env';
 
-type TimeSlot = {
-  id: string;
-  label: string;
-  start: string;
-  end: string;
-};
-
-type ToastState = {
-  type: 'success' | 'error';
-  message: string;
-} | null;
-
-const DEFAULT_API_BASE_URL = 'http://localhost:8080/api/events';
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL).replace(/\/$/, '');
-
-type Review = {
-  name: string;
-  rating: number;
-  title: string;
-  text: string;
-  date: string;
-};
-
-type Service = {
-  id: number;
-  name: string;
-  price: string;
-};
-
-const GOOGLE_REVIEW_URL = 'https://g.page/r/Cc-Uk-mBkwIgEAE/review';
 const SERVICES: Service[] = [
   { id: 1, name: 'Taglio', price: '15€' },
   { id: 5, name: 'Taglio con Barba', price: '22€' },
   { id: 2, name: 'Barba', price: '7€' },
 ];
-const localeReviews: Review[] = [
-  {
-    name: 'Marta',
-    rating: 5,
-    title: 'Atmosfera fantastica',
-    text: 'Locale accogliente, servizio impeccabile e piatti davvero speciali. Torneremo presto!',
-    date: '2 giorni fa',
-  },
-  {
-    name: 'Luca',
-    rating: 5,
-    title: 'Perfetto per una serata speciale',
-    text: 'Ambiente curato, personale molto gentile e attenzione ai dettagli. Consigliatissimo.',
-    date: '1 settimana fa',
-  },
-  {
-    name: 'Sofia',
-    rating: 4,
-    title: 'Ottima esperienza',
-    text: 'Abbiamo trovato un posto elegante e rilassante, ideale per pranzi e cene conviviali.',
-    date: '2 settimane fa',
-  },
-];
+
+// Review data is intentionally kept minimal and only used for the external review CTA.
+// const localeReviews: Review[] = [
+//   {
+//     name: 'Marta',
+//     rating: 5,
+//     title: 'Atmosfera fantastica',
+//     text: 'Locale accogliente, servizio impeccabile e piatti davvero speciali. Torneremo presto!',
+//     date: '2 giorni fa',
+//   },
+//   {
+//     name: 'Luca',
+//     rating: 5,
+//     title: 'Perfetto per una serata speciale',
+//     text: 'Ambiente curato, personale molto gentile e attenzione ai dettagli. Consigliatissimo.',
+//     date: '1 settimana fa',
+//   },
+//   {
+//     name: 'Sofia',
+//     rating: 4,
+//     title: 'Ottima esperienza',
+//     text: 'Abbiamo trovato un posto elegante e rilassante, ideale per pranzi e cene conviviali.',
+//     date: '2 settimane fa',
+//   },
+// ];
 
 function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -118,7 +92,6 @@ function App() {
     month: 'long',
     year: 'numeric',
   });
-  const averageRating = (localeReviews.reduce((sum, review) => sum + review.rating, 0) / localeReviews.length).toFixed(1);
 
   const formatDateKey = (date: Date) => {
     const year = date.getFullYear();
@@ -390,56 +363,24 @@ function App() {
           </div>
         </div>
 
-        <section id="recensioni" className="mx-auto mt-16 max-w-6xl rounded-[2rem] border border-white/15 bg-[rgba(10,10,10,0.82)] p-6 shadow-[0_0_50px_rgba(0,0,0,0.35)] backdrop-blur-xl md:p-10">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.25em] text-brand">
-                <MessageSquareQuote size={16} />
-                <span>Recensioni dei clienti</span>
-              </div>
-              <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">Cosa dicono di noi</h2>
-              <p className="mt-2 max-w-2xl text-sm text-gray-300 sm:text-base">
-                Le esperienze dei nostri ospiti raccontano il valore del locale. Se vuoi, aggiungi anche la tua.
-              </p>
+        <section id="recensioni" className="mx-auto mt-16 max-w-4xl rounded-[2rem] border border-white/15 bg-[rgba(10,10,10,0.82)] p-6 shadow-[0_0_50px_rgba(0,0,0,0.35)] backdrop-blur-xl md:p-10">
+          <div className="flex flex-col items-center gap-4 text-center">
+            <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.25em] text-brand">
+              <MessageSquareQuote size={16} />
+              <span>Recensioni</span>
             </div>
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">Hai appena provato il nostro locale?</h2>
+            <p className="max-w-2xl text-sm text-gray-300 sm:text-base">
+              Condividi la tua esperienza e lascia una recensione su Google.
+            </p>
             <a
               href={GOOGLE_REVIEW_URL}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center rounded-full bg-brand px-5 py-3 font-semibold text-white transition hover:bg-red-500"
+              className="inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 font-semibold text-white transition hover:bg-red-500"
             >
               Lasciami la tua recensione
             </a>
-          </div>
-
-          <div className="mt-8 flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
-            <div className="flex items-center gap-1 text-brand">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Star key={`avg-${index}`} size={18} className={index < 5 ? 'fill-brand text-brand' : 'text-white/25'} />
-              ))}
-            </div>
-            <span className="text-lg font-semibold text-white">{averageRating}/5</span>
-            <span className="text-sm text-gray-300">basato su {localeReviews.length} recensioni</span>
-          </div>
-
-          <div className="mt-8 grid gap-4 lg:grid-cols-3">
-            {localeReviews.map((review) => (
-              <article key={review.name} className="rounded-2xl border border-white/10 bg-black/30 p-5">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-white">{review.name}</h3>
-                    <p className="text-sm text-gray-400">{review.date}</p>
-                  </div>
-                  <div className="flex items-center gap-1 text-brand">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <Star key={`${review.name}-${index}`} size={16} className={index < review.rating ? 'fill-brand text-brand' : 'text-white/25'} />
-                    ))}
-                  </div>
-                </div>
-                <p className="mt-4 text-sm font-semibold uppercase tracking-[0.2em] text-brand">{review.title}</p>
-                <p className="mt-2 text-sm leading-6 text-gray-300">{review.text}</p>
-              </article>
-            ))}
           </div>
         </section>
       </main>
