@@ -319,7 +319,7 @@ function App() {
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
 
-      <main className="relative z-10 px-4 py-10 sm:py-20">
+      <main className="relative z-10 px-4 py-8 sm:py-20">
         <div className="flex min-h-screen items-center justify-center text-center">
           <div className="max-w-3xl">
             <motion.div
