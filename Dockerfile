@@ -1,18 +1,31 @@
-# build stage
+# ==========================================
+# FASE 1: Build dell'applicazione con Node
+# ==========================================
 FROM node:20-alpine AS builder
-
 WORKDIR /app
-COPY package.json package-lock.json* ./
+COPY package*.json ./
 RUN npm install
 COPY . .
-ARG VITE_API_BASE_URL=/api/events
-ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
-RUN npm run build
+# Sostituisci "build" con "dist" se usi Vite
+RUN npm run build 
 
-# runtime stage
-FROM nginx:stable-alpine AS runner
+# ==========================================
+# FASE 2: Server di produzione con Nginx
+# ==========================================
+FROM nginx:alpine
+
+# 1. Rimuove la configurazione di default di Nginx
+RUN rm /etc/nginx/conf.d/default.conf
+
+# 2. Copia il nostro file di configurazione personalizzato
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# 3. Rimuove i file HTML di default di Nginx
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx/frontend.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80 443
+
+# 4. Copia i file compilati dalla FASE 1.
+# Assicurati di usare il percorso giusto (/app/build per CRA, /app/dist per Vite)
+COPY --from=builder /app/build /usr/share/nginx/html
+
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
