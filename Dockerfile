@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 # Sostituisci "build" con "dist" se usi Vite
-RUN npm run build 
+RUN npm run dist 
 
 # ==========================================
 # FASE 2: Server di produzione con Nginx
@@ -25,7 +25,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # 4. Copia i file compilati dalla FASE 1.
 # Assicurati di usare il percorso giusto (/app/build per CRA, /app/dist per Vite)
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
