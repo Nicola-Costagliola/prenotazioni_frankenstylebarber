@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 # Sostituisci "build" con "dist" se usi Vite
-RUN npm run dist 
+RUN npm run build 
 
 # ==========================================
 # FASE 2: Server di produzione con Nginx
