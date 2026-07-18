@@ -319,24 +319,24 @@ function App() {
         <div className="absolute inset-0 bg-black/50"></div>
       </div>
 
-      <main className="relative z-10 px-4 py-6 sm:py-20">
-        <div className="flex min-h-screen items-start justify-center pt-4 text-center sm:min-h-screen sm:items-center sm:pt-0">
+      <main className="relative z-10 px-4 py-10 sm:py-20">
+        <div className="flex min-h-screen items-center justify-center text-center">
           <div className="max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="mb-4 flex justify-center sm:mb-8"
+              className="mb-6 sm:mb-8 flex justify-center"
             >
               <div className="rounded-[1.5rem] border border-white/15 px-5 shadow-[0_0_30px_rgba(255,77,77,0.18)] backdrop-blur-sm">
-                <img src="/logo.png" alt="Logo attività" className="h-40 w-auto object-contain sm:h-56 md:h-72" />
+                <img src="/logo.png" alt="Logo attività" className="h-56 w-auto object-contain md:h-72" />
               </div>
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="mb-3 text-4xl font-extrabold tracking-tight sm:mb-4 sm:text-5xl md:text-7xl lg:text-8xl"
+              className="mb-4 text-5xl font-extrabold tracking-tight md:text-7xl lg:text-8xl"
             >
               Facc bell pur e Mostr!
             </motion.h1>
@@ -344,7 +344,7 @@ function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="mx-auto mb-6 max-w-2xl text-base text-gray-200 sm:mb-10 sm:text-lg md:text-2xl"
+              className="mx-auto mb-10 max-w-2xl text-lg text-gray-200 md:text-2xl"
             >
               Un'avventura indimenticabile ti aspetta. Riserva ora il tuo posto esclusivo.
             </motion.p>
@@ -356,7 +356,7 @@ function App() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsBookingOpen(true)}
-              className="rounded-full bg-brand px-8 py-4 text-lg font-bold text-white shadow-[0_0_40px_rgba(255,77,77,0.4)] transition-all hover:bg-red-500 hover:shadow-[0_0_60px_rgba(255,77,77,0.6)] sm:px-10 sm:py-5 sm:text-xl"
+              className="rounded-full bg-brand px-10 py-5 text-xl font-bold text-white shadow-[0_0_40px_rgba(255,77,77,0.4)] transition-all hover:bg-red-500 hover:shadow-[0_0_60px_rgba(255,77,77,0.6)]"
             >
               PRENOTA ORA
             </motion.button>
